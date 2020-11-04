@@ -1,0 +1,6 @@
+urllib3==1.25.6
+selenium==3.141.0
+chromedriver
+pymongo
+requests
+pyqt5
