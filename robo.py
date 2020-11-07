@@ -7,14 +7,23 @@ class Robo:
     def __init__(self) -> None:
         # discador
         self.discador = Discador()
-        self.discador.url = os.environ.get("URL", "")
-        self.discador.nome = os.environ.get("NOME", "")
-        self.discador.email = os.environ.get("EMAIL", "")
+        self.discador.url = "" #os.environ.get("URL", "")
+        self.discador.nome = "Renato" #os.environ.get("NOME", "")
+        self.discador.email = "renato.jose@hotmail.com" #os.environ.get("EMAIL", "")
         
     
     # configura bandeiras de multi adiquirencia
-    def run_task(self):
-        phone_list = [{'ddd':'1', 'phone':'5515579130'}, {'ddd':'1', 'phone':'2013815436'}, {'ddd':'1', 'phone':'2013657086'}]
+    def run_task(self, url, texto):
+        #phone_list = [{'ddd':'1', 'phone':'5515579130'}, {'ddd':'1', 'phone':'2013815436'}, {'ddd':'1', 'phone':'2013657086'}]
+        self.discador.url = url
+        phone_list = []
+        for l in texto.split(sep="\n"):
+            c = l.split(sep=":")
+            if len(c) == 2:
+                phone_list.append({
+                    "ddd": c[0],
+                    "phone": c[1]
+                })
         for p in phone_list:
             ddd = p['ddd']
             phone = p['phone']
