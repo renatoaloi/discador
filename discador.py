@@ -37,8 +37,8 @@ class Discador:
         #
         # Para rodar local, use esse abaixo:
         chrome_options = Options()
-        chrome_options.add_extension('duplicate_tab_shortcut.crx')
-        self.driver = webdriver.Chrome(chrome_options=chrome_options, executable_path="chromedriver.exe")
+        #chrome_options.add_extension('duplicate_tab_shortcut.crx')
+        self.driver = webdriver.Chrome(chrome_options=chrome_options, executable_path="./chromedriver")
         # #
         # # Para rodar no docker, descomente as linhas abaixo e comente a de cima
         # chrome_options = Options()
@@ -155,18 +155,29 @@ class Discador:
 
         # //*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input
         do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input', By.XPATH, 'click')
-        sleep(self.espera)
+        for i in range(4):
+            do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input', By.XPATH, 'send_keys', Keys.BACKSPACE)
+        do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input', By.XPATH, 'send_keys', ddd)
+        #sleep(self.espera)
+        #do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input', By.XPATH, 'click')
+        #sleep(self.espera)
+        
+        # while(1):
+        #     # //*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[2]/section/div[1]/div/ul/li[2]
+        #     ul = wait_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[2]/section/div[1]/div/ul', By.XPATH, 10)
+        #     #ddd = 1
+        #     for li in ul.find_elements_by_xpath(".//li"):
+        #         val = li.get_attribute("title")
+        #         num = val.split("+")[1]
+        #         print(int(num))
+        #         if ddd == int(num):
+        #             li.click()
+        #             break
+            
+        #     for i in range(8):
+        #         do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input', By.XPATH, 'send_keys', Keys.ARROW_DOWN)
+        #         sleep(self.espera)
 
-        # //*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[2]/section/div[1]/div/ul/li[2]
-        ul = wait_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[2]/section/div[1]/div/ul', By.XPATH, 10)
-        #ddd = 1
-        for li in ul.find_elements_by_xpath(".//li"):
-            val = li.get_attribute("title")
-            num = val.split("+")[1]
-            print(int(num))
-            if ddd == int(num):
-                li.click()
-                break
         sleep(self.espera)
 
         # Retorna para a janela principal (fora do iframe)
