@@ -79,6 +79,21 @@ class Discador:
         sleep(self.espera)
         #
         return el
+    
+    def wait_for_it_xpath(self, selector="", tempo=10):
+        el = None
+        while not el:
+            try: 
+                el = wait_element(self.driver, selector, By.XPATH, tempo)
+                print("Selector [{}] OK!".format(selector))
+            except Exception as e:
+                print("Erro no Selector [{}]! Descricao: {}".format(selector, str(e)))
+                break
+        #
+        # Aguardar um tempo
+        sleep(self.espera)
+        #
+        return el
 
 
     def do_form(self):
@@ -134,12 +149,24 @@ class Discador:
         # Muda o foco para o iframe
         self.driver.switch_to.frame(iframe)
 
-        #  //*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[2]/button/div/span[2]/span[2]/i
-        do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[2]/button/div/span[2]/span[2]/i', By.XPATH, 'click')
+        btn = '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[2]/button'
+        opt1 = '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[1]/button/div/span[2]/span[2]/i'
+        opt2 = '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[2]/button/div/span[2]/span[2]/i'
+        el = self.wait_for_it_xpath(btn, 2)
+        if el:
+            do_element(self.driver, opt2, By.XPATH, 'click')
+        else: 
+            do_element(self.driver, opt1, By.XPATH, 'click')
         sleep(self.espera)
 
         # //*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div/div[1]/button
-        do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div/div[1]/button', By.XPATH, 'click')
+        opt1 = '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div/div[1]/button'
+        opt2 = '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[3]/ul/li[2]/div/div/div[1]/div[2]/div/div/div[1]/button'
+        el = self.wait_for_it_xpath(opt1, 2)
+        if el:
+            do_element(self.driver, opt1, By.XPATH, 'click')
+        else: 
+            do_element(self.driver, opt2, By.XPATH, 'click')
         sleep(self.espera)
 
         # Retorna para a janela principal (fora do iframe)
@@ -153,11 +180,21 @@ class Discador:
         # Muda o foco para o iframe
         self.driver.switch_to.frame(iframe)
 
-        # //*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input
-        do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input', By.XPATH, 'click')
-        for i in range(4):
-            do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input', By.XPATH, 'send_keys', Keys.BACKSPACE)
-        do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input', By.XPATH, 'send_keys', ddd)
+        opt1 = '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input'
+        opt2 = '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[3]/ul/li[2]/div/div/div[1]/div[2]/div/div[1]/div[1]/div/div[3]/input'
+        el = self.wait_for_it_xpath(opt1, 2)
+        if el:
+            do_element(self.driver, opt1, By.XPATH, 'click')
+            for i in range(4):
+                do_element(self.driver, opt1, By.XPATH, 'send_keys', Keys.BACKSPACE)
+            do_element(self.driver, opt1, By.XPATH, 'send_keys', ddd)
+        else: 
+            do_element(self.driver, opt2, By.XPATH, 'click')
+            for i in range(4):
+                do_element(self.driver, opt2, By.XPATH, 'send_keys', Keys.BACKSPACE)
+            do_element(self.driver, opt2, By.XPATH, 'send_keys', ddd)
+        sleep(self.espera)
+
         #sleep(self.espera)
         #do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input', By.XPATH, 'click')
         #sleep(self.espera)
@@ -178,8 +215,6 @@ class Discador:
         #         do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div[1]/div[1]/div/div[3]/input', By.XPATH, 'send_keys', Keys.ARROW_DOWN)
         #         sleep(self.espera)
 
-        sleep(self.espera)
-
         # Retorna para a janela principal (fora do iframe)
         self.driver.switch_to.default_content()
 
@@ -194,13 +229,26 @@ class Discador:
         self.driver.switch_to.frame(iframe)
 
         #phone = '2013815436'
-        do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div/div[2]/input', By.XPATH, 'click')
-        sleep(self.espera)
+        # do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div/div[2]/input', By.XPATH, 'click')
+        # sleep(self.espera)
 
-        do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div/div[2]/input', By.XPATH, 'send_keys', phone)
-        sleep(self.espera)
+        # do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div/div[2]/input', By.XPATH, 'send_keys', phone)
+        # sleep(self.espera)
 
-        do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div/div[2]/input', By.XPATH, 'send_keys', Keys.RETURN)
+        # do_element(self.driver, '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div/div[2]/input', By.XPATH, 'send_keys', Keys.RETURN)
+        # sleep(self.espera)
+
+        opt1 = '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[4]/ul/li[2]/div/div/div/div[2]/div/div/div[2]/input'
+        opt2 = '//*[@id="meetingSimpleContainer"]/div[3]/div[1]/div[2]/div[3]/ul/li[2]/div/div/div[1]/div[2]/div/div[1]/div[2]/input'
+        el = self.wait_for_it_xpath(opt1, 2)
+        if el:
+            do_element(self.driver, opt1, By.XPATH, 'click')
+            do_element(self.driver, opt1, By.XPATH, 'send_keys', phone)
+            do_element(self.driver, opt1, By.XPATH, 'send_keys', Keys.RETURN)
+        else: 
+            do_element(self.driver, opt2, By.XPATH, 'click')
+            do_element(self.driver, opt2, By.XPATH, 'send_keys', phone)
+            do_element(self.driver, opt2, By.XPATH, 'send_keys', Keys.RETURN)
         sleep(self.espera)
 
         # Retorna para a janela principal (fora do iframe)
