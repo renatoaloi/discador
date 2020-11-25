@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QGridLayout, QLineEdit, QWidget, QLabel, QTextEdit, QDialog, QPushButton, QMessageBox
 from robo import Robo
 import sys
+import threading
 
 class Janela(QDialog):
     def __init__(self, **args):
@@ -27,7 +28,23 @@ class Janela(QDialog):
         self.layout().addWidget(button)
 
     def robo1(self):
-        self.robo.run_task(self.url.text(), self.text.toPlainText())
+        texto = self.text.toPlainText()
+        phone_list = []
+        for l in texto.split(sep="\n"):
+            c = l.split(sep=":")
+            if len(c) == 2:
+                phone_list.append({
+                    "ddd": c[0],
+                    "phone": c[1]
+                })
+        for p in phone_list:
+            thread = threading.Thread(
+                target=self.robo.run_task, 
+                args=(self.url.text(), p["ddd"], p["phone"])
+            )
+            #self.robo.run_task(self.url.text(), p["ddd"], p["phone"])
+            thread.daemon = True
+            thread.start()
     
 if __name__ == '__main__':
     app = QApplication([])
